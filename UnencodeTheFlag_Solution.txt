@@ -1,0 +1,39 @@
+Unencode The Flag UDCTF2023 Solution
+
+Copy the "fffe0000790000006f000000750000002000000073000000..." hex into Cyberchef
+Magic wand will promp you to appy "from hex"
+Then magic wand will prompt "UTF-32 LE file detected". Apply "Decode text" with UTF-32LE encoding to reveal another message "you stupid. fffe79006f00750020007300740075007000690064002e00..."
+
+This is UTF-16 encoded, repeat the steps above twice until you reach the final message:
+Unencode The Format: Wuts nine plus ten? [0,2,168,0,17,0,0,134,0,5,64,0,35,0,1,236,0,6,224,0,119,0,1,152,0,27,128,0,232,0,7,144,0,47,128,0,192,0,13,192,0,51,0,1,248,0,23,192,0,178,0,3,0,0,58,128,1,124,0,6,160,0,55,0,3,168,0,28,0,0,98,0,6,64,0,16,128,1,244]
+
+Unencode The Format => U T F
+A google search of "Whats 9 + 10" will reveal the vine video. Keywords "stupid", "no im not", "vine" help too
+https://www.youtube.com/watch?v=UniPsEFWu3M
+9+10=21
+
+So following in the last few steps, a curious CTFer may look up "WTF is UTF-21", which would reveal a wonderful blog post by Evan Hahn
+https://evanhahn.com/utf-21/
+https://git.sr.ht/~evanhahn/UTF-21.js
+
+The link to the github will reveal a demo which a CTFer can play with, along with example code which should make everything clear. I left the bytes in array format in order to make this connection easier.
+
+import * as utf21 from "utf21";
+const encoded = utf21.encode("foo");
+// => Uint8Array(8) [0, 3, 48, 0, 27, 192, 0, 222]
+const decoded = utf21.decode(encoded);
+// => "foo"
+
+
+1. It's UTF-21 : Open Repl for TS
+2. clone repository https://git.sr.ht/~evanhahn/UTF-21.js
+
+tsx
+> let myModule
+> import("./utf21.ts").then(module => { myModule = module });
+> let array = new Uint8Array([0,2,168,0,17,0,0,134,0,5,64,0,35,0,1,236,0,6,224,0,119,0,1,152,0,27,128,0,232,0,7,144,0,47,128,0,192,0,13,192,0,51,0,1,248,0,23,192,0,178,0,3,0,0,58,128,1,124,0,6,160,0,55,0,3,168,0,28,0,0,98,0,6,64,0,16,128,1,244])
+> myModule.decode(array)
+"UDCTF{7w3nty_0n3?_Y0u_57up1d!}"
+
+
+:)
